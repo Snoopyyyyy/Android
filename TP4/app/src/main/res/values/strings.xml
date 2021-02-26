@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">TP4</string>
+    <string name="password">Mot de passe</string>
+    <string name="email">Adress E-Mail</string>
+    <string name="connection">Connection</string>
+    <string name="name">Name</string>
+    <string name="todo">TODO</string>
+    <string name="cancel">Cancel</string>
+    <string name="next">Next</string>
+    <string name="vrai">Vrai</string>
+    <string name="faux">Faux</string>
+
+    <string name="question1">En quel année est née Mr Hollande?</string>
+    <string name="q1_r1">12 août 1954</string>
+    <string name="q1_r2">24 juin 1947</string>
+    <string name="q1_r3">07 fevrier 1975</string>
+
+    <string name="question2">Cocher les couleurs</string>
+    <string name="q2_r1">maison</string>
+    <string name="q2_r2">rouge</string>
+    <string name="q2_r3">vert</string>
+    <string name="q2_r4">rose</string>
+    <string name="q2_r5">lit</string>
+    <string name="q2_r6">cousin</string>
+
+    <string name="question3">Les enfants de la soeur de ta mère sont tes cousin ?</string>
+
+    <string name="question4">Lesquel de ces mots est au pluriel</string>
+
+    <string name="question5">Recopier cette phrase a la 3eme personnes du pluriel</string>
+    <string name="q5_phrase">je suis partie au toilette.</string>
+    <string name="q5_startre">Elles ...</string>
+</resources>
