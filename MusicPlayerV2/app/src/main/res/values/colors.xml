@@ -12,5 +12,7 @@
     <color name="dark_purple">#10001A</color>
     <color name="purple">#2E004B</color>
     <color name="light_purple">#470074</color>
+    <color name="light_light_purple">#9C00FF</color>
     <color name="dark_gray">#181818</color>
+    <color name="light_gray">#303030</color>
 </resources>

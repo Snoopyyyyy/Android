@@ -12,11 +12,17 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.androiddev.musicplayerv2.MainActivity;
 import com.androiddev.musicplayerv2.R;
 
 public class MusicPlaylistFragment extends Fragment {
 
     private MusicPlaylistVM dashboardViewModel;
+    private MainActivity main;
+
+    public MusicPlaylistFragment(MainActivity main) {
+        this.main = main;
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
