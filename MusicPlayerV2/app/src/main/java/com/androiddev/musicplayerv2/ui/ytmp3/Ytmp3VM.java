@@ -1,14 +1,14 @@
-package com.androiddev.musicplayerv2.ui.notifications;
+package com.androiddev.musicplayerv2.ui.ytmp3;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class Ytmp3VM extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public Ytmp3VM() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }

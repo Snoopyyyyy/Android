@@ -1,4 +1,4 @@
-package com.androiddev.musicplayerv2.ui.home;
+package com.androiddev.musicplayerv2.ui.music;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,15 +14,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.androiddev.musicplayerv2.R;
 
-public class HomeFragment extends Fragment {
+public class MusicFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private MusicVM homeViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        homeViewModel = new ViewModelProvider(this).get(MusicVM.class);
+        View root = inflater.inflate(R.layout.fragment_music, container, false);
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

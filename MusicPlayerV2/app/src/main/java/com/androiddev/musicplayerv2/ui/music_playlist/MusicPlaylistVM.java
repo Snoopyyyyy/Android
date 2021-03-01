@@ -1,14 +1,14 @@
-package com.androiddev.musicplayerv2.ui.dashboard;
+package com.androiddev.musicplayerv2.ui.music_playlist;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class MusicPlaylistVM extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public MusicPlaylistVM() {
         mText = new MutableLiveData<>();
         mText.setValue("This is dashboard fragment");
     }
