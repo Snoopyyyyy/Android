@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp">
+
+    <ImageView
+        android:id="@+id/music_list_row_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/light_light_gray"
+        android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_music_note_24" />
+
+    <ImageButton
+        android:id="@+id/music_list_row_more"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_bouton"
+        android:padding="0dp"
+        android:layout_marginVertical="10dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
+    <TextView
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/music_list_row_titre"
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/music_list_row_more"
+        app:layout_constraintStart_toEndOf="@+id/music_list_row_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/music_list_row_artiste"
+        android:textSize="15sp"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/music_list_row_more"
+        app:layout_constraintStart_toEndOf="@+id/music_list_row_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

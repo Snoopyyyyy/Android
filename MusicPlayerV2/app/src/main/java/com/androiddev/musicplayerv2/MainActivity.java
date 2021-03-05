@@ -1,13 +1,16 @@
 package com.androiddev.musicplayerv2;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.androiddev.musicplayerv2.ui.FullScreenPlayerFragment;
@@ -20,9 +23,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentContainerView fragContainer;
     private FragmentContainerView fragContainerSound;
     private Fragment last;
+    private MainViewModel homeViewModel;
 
     private ConstraintLayout.LayoutParams backup;
 
@@ -39,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        isStoragePermissionGranted();
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_music, R.id.navigation_playlist, R.id.navigation_ytmp3).build();
         this.name = findViewById(R.id.NameFrag);
         this.fragContainer = findViewById(R.id.hostFragement);
         this.fragContainerSound = findViewById(R.id.music_player_fragment);
+        this.homeViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         last = new MusicFragment(this);
         this.initNavBar(this);
         this.initPlayMusic(this);
@@ -119,5 +127,42 @@ public class MainActivity extends AppCompatActivity {
                return true;
            }
        });
+    }
+
+    public MainViewModel getViewModel(){
+        return this.homeViewModel;
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
+                Log.v("TAG","Permission is granted");
+                return true;
+            } else {
+                Log.v("TAG","Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+                if(checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED)
+                    Log.v("TAG","Permission is revoked success !");
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v("TAG","Permission is granted");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Log.v("TAG","Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
+    }
+
+    public Context requireContext() {
+        return getApplicationContext();
     }
 }
