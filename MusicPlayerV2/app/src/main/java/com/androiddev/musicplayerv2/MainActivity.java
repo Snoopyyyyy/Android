@@ -4,15 +4,26 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.androiddev.musicplayerv2.backend.background_player.Converter;
+import com.androiddev.musicplayerv2.backend.exception.MusicPlayerException;
+import com.androiddev.musicplayerv2.backend.exception.PlayListAllReadyExistException;
+import com.androiddev.musicplayerv2.backend.exception.PlayListNotExistException;
+import com.androiddev.musicplayerv2.backend.exception.SoundAllReadyExistException;
+import com.androiddev.musicplayerv2.backend.sound_data.PlayListManager;
 import com.androiddev.musicplayerv2.ui.FullScreenPlayerFragment;
 import com.androiddev.musicplayerv2.ui.MusicPlayer;
 import com.androiddev.musicplayerv2.ui.music.MusicFragment;
@@ -30,6 +41,10 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView name;
@@ -40,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel homeViewModel;
 
     private ConstraintLayout.LayoutParams backup;
-
+    PlayListManager pl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +71,62 @@ public class MainActivity extends AppCompatActivity {
         this.initPlayMusic(this);
         this.setFragContainer(R.id.hostFragement,last);
         this.setFragContainer(R.id.music_player_fragment,new MusicPlayer(this));
+        pl = new PlayListManager(getApplicationContext());
+        /*try {
+            initPlayList();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        System.out.println(pl.toString());
     }
+
+    private void initPlayList() throws InterruptedException {
+        Random rm = new Random();
+        ArrayList<File> fileList = getRandomSong();
+        System.out.println(fileList);
+        for(int y=0;y<2;y++) {
+            try {
+                pl.create("pl"+y);
+                for (int i = 0; i < 10; i++) {
+                    try {
+                        pl.addSongToPlayList("pl"+y, fileList.get(rm.nextInt(fileList.size())));
+                    } catch (MusicPlayerException e) {
+                        Toast.makeText(getApplicationContext(), e.getError(), Toast.LENGTH_LONG).show();
+                        //Thread.sleep(1500);
+                        System.err.println(e.getError());
+                    }
+                }
+            } catch (PlayListAllReadyExistException e) {
+                Toast.makeText(getApplicationContext(), e.getError(), Toast.LENGTH_LONG).show();
+                System.err.println(e.getError());
+                //Thread.sleep(1500);
+            }
+        }
+        System.out.println(pl.toString());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            pl.saveFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ArrayList<File> getRandomSong(){
+        ArrayList<File> file = new ArrayList<>();
+        for(File music : Converter.getMusic(Environment.getExternalStorageDirectory())) {
+            file.add(music);
+        }
+        File sd = getApplicationContext().getExternalFilesDirs(null)[1].getParentFile().getParentFile().getParentFile().getParentFile();
+        for(File music : Converter.getMusic(sd)) {
+            file.add(music);
+        }
+        return file;
+    }
+
 
     private void setFragContainer(int idFrag,Fragment fragment){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
