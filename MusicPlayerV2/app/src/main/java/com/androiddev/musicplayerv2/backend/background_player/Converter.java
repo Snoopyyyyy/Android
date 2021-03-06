@@ -27,7 +27,7 @@ public class Converter {
 
     public static String getArtiste(String replace) {
         try{
-            String[] part = replace.split("-");
+            String[] part = replace.split(" - ");
             return part[0];
         }catch (Exception e){
            return "Anonymous";

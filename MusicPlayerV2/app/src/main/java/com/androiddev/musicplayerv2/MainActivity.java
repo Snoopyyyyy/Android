@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
     private Fragment last;
     private MainViewModel homeViewModel;
 
+    private static MainActivity main;
+
     private ConstraintLayout.LayoutParams backup;
-    PlayListManager pl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,60 +72,7 @@ public class MainActivity extends AppCompatActivity {
         this.initPlayMusic(this);
         this.setFragContainer(R.id.hostFragement,last);
         this.setFragContainer(R.id.music_player_fragment,new MusicPlayer(this));
-        pl = new PlayListManager(getApplicationContext());
-        /*try {
-            initPlayList();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        System.out.println(pl.toString());
-    }
-
-    private void initPlayList() throws InterruptedException {
-        Random rm = new Random();
-        ArrayList<File> fileList = getRandomSong();
-        System.out.println(fileList);
-        for(int y=0;y<2;y++) {
-            try {
-                pl.create("pl"+y);
-                for (int i = 0; i < 10; i++) {
-                    try {
-                        pl.addSongToPlayList("pl"+y, fileList.get(rm.nextInt(fileList.size())));
-                    } catch (MusicPlayerException e) {
-                        Toast.makeText(getApplicationContext(), e.getError(), Toast.LENGTH_LONG).show();
-                        //Thread.sleep(1500);
-                        System.err.println(e.getError());
-                    }
-                }
-            } catch (PlayListAllReadyExistException e) {
-                Toast.makeText(getApplicationContext(), e.getError(), Toast.LENGTH_LONG).show();
-                System.err.println(e.getError());
-                //Thread.sleep(1500);
-            }
-        }
-        System.out.println(pl.toString());
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            pl.saveFile();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private ArrayList<File> getRandomSong(){
-        ArrayList<File> file = new ArrayList<>();
-        for(File music : Converter.getMusic(Environment.getExternalStorageDirectory())) {
-            file.add(music);
-        }
-        File sd = getApplicationContext().getExternalFilesDirs(null)[1].getParentFile().getParentFile().getParentFile().getParentFile();
-        for(File music : Converter.getMusic(sd)) {
-            file.add(music);
-        }
-        return file;
+        main = this;
     }
 
 
@@ -132,6 +80,19 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(idFrag,fragment);
         ft.commit();
+    }
+
+    public void setMainFragment(Fragment frag,boolean hideNameBar){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.hostFragement,frag);
+        ft.commit();
+        if(hideNameBar){
+            name.setVisibility(View.GONE);
+            nav_view.setVisibility(View.GONE);
+        }else{
+            name.setVisibility(View.VISIBLE);
+            nav_view.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initPlayMusic(MainActivity main) {
@@ -234,5 +195,9 @@ public class MainActivity extends AppCompatActivity {
 
     public Context requireContext() {
         return getApplicationContext();
+    }
+
+    public static MainActivity getMain(){
+        return main;
     }
 }

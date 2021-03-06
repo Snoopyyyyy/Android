@@ -5,14 +5,17 @@ import android.os.Build;
 import android.os.Environment;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import com.androiddev.musicplayerv2.backend.exception.PlayListAllReadyExistException;
 import com.androiddev.musicplayerv2.backend.exception.PlayListNotExistException;
 import com.androiddev.musicplayerv2.backend.exception.SoundAllReadyExistException;
+import com.androiddev.musicplayerv2.ui.music_playlist.MusicPlaylistFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.BufferedReader;
@@ -24,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayListManager {
-    private List<PlayList> list;
-    private File saveFile;
+    private final List<PlayList> list;
+    private final File saveFile;
 
     public PlayListManager(Context context){
         this.saveFile = new File(context.getCacheDir().getAbsolutePath()+File.separator+"playListManager.json");
@@ -51,20 +54,23 @@ public class PlayListManager {
         while((str = buf.readLine()) != null){
             builder.append(str);
         }
-        str = builder.toString();
-        JSONArray playListJSON = new JSONArray(str);
+        JSONObject obj = new JSONObject(builder.toString());
+        JSONArray playListJSON = obj.getJSONArray("playList");
         for (int i = 0; i < playListJSON.length(); i++) {
             list.add(new PlayList(playListJSON.getJSONObject(i)));
         }
+        buf.close();
     }
 
     public void saveFile() throws Exception {
+        JSONObject plyListObj = new JSONObject();
         JSONArray playListJSON = new JSONArray();
         for(PlayList pl : list){
             playListJSON.put(pl.save());
         }
+        plyListObj.put("playList",playListJSON);
         FileWriter writer = new FileWriter(this.saveFile);
-        writer.write(playListJSON.toString());
+        writer.write(plyListObj.toString());
         writer.flush();
         writer.close();
     }
@@ -73,8 +79,14 @@ public class PlayListManager {
         PlayList pl = getPL(name);
         if(pl == null)
             throw new PlayListNotExistException(name);
-        else
-            pl.addSound(f);
+        else {
+            try {
+                pl.addSound(f);
+                saveFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @NotNull
@@ -86,7 +98,14 @@ public class PlayListManager {
     public void create(String str) throws PlayListAllReadyExistException {
         if(getPL(str) != null)
             throw new PlayListAllReadyExistException(str);
-        list.add(new PlayList(str));
+        else {
+            list.add(new PlayList(str));
+            try {
+                saveFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public PlayList getPL(String name){
@@ -95,5 +114,9 @@ public class PlayListManager {
                 return pl;
         }
         return null;
+    }
+
+    public List<PlayList> getAll() {
+        return this.list;
     }
 }

@@ -3,20 +3,23 @@ package com.androiddev.musicplayerv2.backend.sound_data;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v4.media.MediaDescriptionCompat;
 
 import com.androiddev.musicplayerv2.backend.background_player.Converter;
 import com.androiddev.musicplayerv2.backend.exception.SoundAllReadyExistException;
+import com.androiddev.musicplayerv2.ui.music_playlist.MusicPlaylistFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayList {
+public class PlayList implements Serializable {
     private String name;
     private File icon;
     private List<MediaDescriptionCompat> soundList;
@@ -29,7 +32,10 @@ public class PlayList {
 
     public PlayList(JSONObject playlist) throws JSONException {
         this.name = playlist.getString("name");
-        this.icon = new File(playlist.getString("icon"));
+        if(playlist.getString("icon").equalsIgnoreCase("null"))
+            this.icon = null;
+        else
+            this.icon = new File(playlist.getString("icon").replace("\\",""));
         this.soundList = new ArrayList<>();
         JSONArray soundListArray = playlist.getJSONArray("sound");
         for(int i=0;i<soundListArray.length();i++){
@@ -48,7 +54,10 @@ public class PlayList {
 
         JSONObject obj = new JSONObject();
         obj.put("name",this.name);
-        obj.put("icon",this.icon.getAbsoluteFile());
+        if(this.icon != null)
+            obj.put("icon",this.icon.getAbsoluteFile());
+        else
+            obj.put("icon","null");
         obj.put("sound",array);
         return obj;
     }
@@ -57,7 +66,9 @@ public class PlayList {
         this.name = newName;
     }
     public Bitmap getIconBitmap(){
-        return BitmapFactory.decodeFile(icon.getAbsolutePath());
+        if(icon != null)
+            return BitmapFactory.decodeFile(icon.getAbsolutePath());
+        return null;
     }
     public void addSound(File sound) throws SoundAllReadyExistException {
         if(exist(sound)) throw new SoundAllReadyExistException(sound.getName().split("\\.")[0].replace("_"," "));

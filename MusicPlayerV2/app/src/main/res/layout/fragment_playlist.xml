@@ -6,17 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.music_playlist.MusicPlaylistFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
+    <ImageButton
+        android:id="@+id/fragment_playlist_create"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginVertical="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/shuffle_button"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_playlist_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_playlist_create" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
