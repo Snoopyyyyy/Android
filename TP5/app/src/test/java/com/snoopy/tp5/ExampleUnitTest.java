@@ -1,4 +1,4 @@
-package com.androiddev.tp5;
+package com.snoopy.tp5;
 
 import org.junit.Test;
 

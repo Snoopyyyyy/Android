@@ -1,4 +1,4 @@
-package com.androiddev.tp5;
+package com.snoopy.tp5;
 
 import android.content.Context;
 
@@ -21,6 +21,7 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.androiddev.tp5", appContext.getPackageName());
+
+        assertEquals("com.snoopy.tp5", appContext.getPackageName());
     }
 }
