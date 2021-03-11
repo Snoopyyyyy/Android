@@ -7,8 +7,14 @@
     <string name="login">Connection</string>
     <string name="e_mail">E-mail</string>
     <string name="mot_de_passe">Mot de passe</string>
+    <string name="mot_de_passe_confirmation">Verification Mot de passe</string>
     <string name="stay_connect">Rester connecter</string>
 
-    <string name="failed_addLogin">Votre inscription a échoué</string>
+    <string name="failed_addLogin">inscription échoué</string>
     <string name="failed_connect">Connection reffusé</string>
+    <string name="register">Inscription</string>
+    <string name="addLogin">Inscription réussis</string>
+    <string name="cancel">Anuller</string>
+    <string name="todo">TODO</string>
+    <string name="notSamePassword">Les MPD ne sont pas identique</string>
 </resources>

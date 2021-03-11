@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends Fragment implements View.OnClickListener{
 
     private TextView email;
     private EditText password;
@@ -30,45 +30,37 @@ public class LoginFragment extends Fragment {
         password = v.findViewById(R.id.authentication_login_password);
         stay = v.findViewById(R.id.authentication_login_stay_log);
 
-        Button valider = v.findViewById(R.id.authentication_login_button_login);
-        valider.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AuthenticationActivity main = AuthenticationActivity.getInstance();
-                if(main != null){
-                    main.tryConnect(email.getText().toString(),password.getText().toString(),stay.isChecked());
+        AuthenticationActivity main = AuthenticationActivity.getInstance();
+        if (main != null) {
+            System.out.println(main.getLast()+" "+main.stayLog());
+            if (main.stayLog()) {
+                try {
+                    JSONObject last = main.getLast();
+                    email.setText(last.getString("Email"));
+                    password.setText(last.getString("Password"));
+                    stay.setChecked(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        });
+        }
 
+        Button valid = v.findViewById(R.id.authentication_login_button_login);
+        valid.setOnClickListener(this);
+
+        Button register = v.findViewById(R.id.authentication_login_button_register);
+        register.setOnClickListener(this);
         return v;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        new Thread(){
-            @Override
-            public void run() {
-                boolean check = false;
-                do {
-                    AuthenticationActivity main = AuthenticationActivity.getInstance();
-                    if (main != null) {
-                        System.out.println(main.getLast()+" "+main.stayLog());
-                        if (main.stayLog()) {
-                            check = true;
-                            try {
-                                JSONObject last = main.getLast();
-                                email.setText(last.getString("Email"));
-                                password.setText(last.getString("Password"));
-                                stay.setChecked(true);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }while(!check);
-            }
-        }.start();
+    public void onClick(View v) {
+        AuthenticationActivity main = AuthenticationActivity.getInstance();
+        if(main == null) return;
+        if(v.getId() == R.id.authentication_login_button_login){
+            main.tryConnect(email.getText().toString(),password.getText().toString(),stay.isChecked());
+        }else if(v.getId() == R.id.authentication_login_button_register){
+            main.switchFragment(1);
+        }
     }
 }

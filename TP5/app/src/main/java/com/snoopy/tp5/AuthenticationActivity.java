@@ -1,10 +1,10 @@
 package com.snoopy.tp5;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,14 +28,14 @@ public class AuthenticationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authentication);
-        main = this;
         this.stayConnect = false;
         try {
             setUp();
         } catch (Exception e){
             e.printStackTrace();
         }
+        main = this;
+        setContentView(R.layout.activity_authentication);
     }
 
     private void setUp() throws IOException, JSONException {
@@ -85,14 +85,20 @@ public class AuthenticationActivity extends AppCompatActivity {
         }
     }
 
-    public void addLogin(String email,String password){
+    public void addLogin(String email, String password, String password2){
         try {
             if(getIdFromName(email) == -1) {
-                JSONObject obj = new JSONObject();
-                obj.put("Email",email);
-                obj.put("Password",password);
-                this.jsonArrayLoggin.put(obj);
-                saveInfo();
+                if(!password.equalsIgnoreCase(password2)){
+                    Toast.makeText(getApplicationContext(), getText(R.string.notSamePassword), Toast.LENGTH_LONG).show();
+                }else {
+                    JSONObject obj = new JSONObject();
+                    obj.put("Email", email);
+                    obj.put("Password", password);
+                    this.jsonArrayLoggin.put(obj);
+                    saveInfo();
+                    switchFragment(0);
+                    Toast.makeText(getApplicationContext(), getText(R.string.addLogin), Toast.LENGTH_LONG).show();
+                }
             }else{
                 throw new Exception();
             }
@@ -141,5 +147,15 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     public JSONObject getLast(){
         return this.last;
+    }
+
+    public void switchFragment(int id) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if(id == 0){
+            ft.replace(R.id.activity_authentication_container,new LoginFragment());
+        }else{
+            ft.replace(R.id.activity_authentication_container,new RegisterFragment());
+        }
+        ft.commit();
     }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_login"
-    tools:context=".LoginFragment">
+    tools:context=".RegisterFragment">
 
     <ImageView
         android:id="@+id/logo"
@@ -27,7 +27,7 @@
         android:contentDescription="@string/todo" />
 
     <EditText
-        android:id="@+id/authentication_login_email"
+        android:id="@+id/authentication_register_email"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
@@ -46,7 +46,7 @@
         android:autofillHints="" />
 
     <EditText
-        android:id="@+id/authentication_login_password"
+        android:id="@+id/authentication_register_password"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="70dp"
@@ -58,7 +58,23 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_login_email"
+        app:layout_constraintTop_toBottomOf="@+id/authentication_register_email"
+        android:autofillHints="" />
+
+    <EditText
+        android:id="@+id/authentication_register_password2"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="70dp"
+        android:background="@drawable/bg_button"
+        android:ems="10"
+        android:hint="@string/mot_de_passe_confirmation"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/authentication_register_password"
         android:autofillHints="" />
 
     <LinearLayout
@@ -66,12 +82,12 @@
         android:layout_height="70dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_login_stay_log"
+        app:layout_constraintTop_toBottomOf="@+id/authentication_register_password2"
         app:layout_constraintVertical_bias="0.24"
         tools:layout_editor_absoluteX="0dp">
 
         <Button
-            android:id="@+id/authentication_login_button_register"
+            android:id="@+id/authentication_register_button_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="10dp"
@@ -79,11 +95,11 @@
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
             android:background="@drawable/bg_button"
-            android:text="@string/register"
+            android:text="@string/cancel"
             tools:ignore="ButtonStyle" />
 
         <Button
-            android:id="@+id/authentication_login_button_login"
+            android:id="@+id/authentication_register_button_register"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="10dp"
@@ -91,18 +107,8 @@
             android:layout_marginEnd="30dp"
             android:layout_weight="1"
             android:background="@drawable/bg_button"
-            android:text="@string/login"
+            android:text="@string/register"
             tools:ignore="ButtonStyle" />
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/authentication_login_stay_log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="@string/stay_connect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authentication_login_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
